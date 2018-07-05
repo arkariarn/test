@@ -11,10 +11,16 @@ namespace AdventureGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
+
+        Texture2D whiteRectangle;
+        int playerHealth = 100;
+        int enemyHealth = 100;
+        Rectangle playerBar = new Rectangle(120, 200, 100, 20);
+        Rectangle enemyBar = new Rectangle(600, 200, 100, 20);
+
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this);            
             Content.RootDirectory = "Content";
         }
 
@@ -41,6 +47,8 @@ namespace AdventureGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            whiteRectangle = new Texture2D(GraphicsDevice, 1, 1);
+            whiteRectangle.SetData(new[] { Color.White });
         }
 
         /// <summary>
@@ -50,6 +58,8 @@ namespace AdventureGame
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            spriteBatch.Dispose();
+            whiteRectangle.Dispose();
         }
 
         /// <summary>
@@ -63,6 +73,8 @@ namespace AdventureGame
                 Exit();
 
             // TODO: Add your update logic here
+            playerBar.Width = playerHealth;
+            enemyBar.Width = enemyHealth;
 
             base.Update(gameTime);
         }
@@ -73,10 +85,13 @@ namespace AdventureGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
+            spriteBatch.Begin();
 
-            // TODO: Add your drawing code here
+            spriteBatch.Draw(whiteRectangle, playerBar, Color.White);
+            spriteBatch.Draw(whiteRectangle, enemyBar, Color.White);
 
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
